@@ -62,53 +62,53 @@ public class StackInterpreterInstrTests {
     assertEquals("", execute(new Code(instrs, 1, 1), dict));
   }
 
-//  @Tag("Q3") @Test
-//  public void integer3() {
-//  	// 3
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  		CONST, encodeSmallInt(3),
-//  		RET
-//  	};
-//    assertEquals("", execute(new Code(instrs, 1, 1), dict));
-//  }
-//
-//  @Tag("Q4") @Test
-//  public void print3() {
-//    // print(3)
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  		CONST, encodeSmallInt(3),
-//  		PRINT,
-//  		RET
-//  	};
-//    assertEquals("3\n", execute(new Code(instrs, 1, 1), dict));
-//  }
-//  @Tag("Q4") @Test
-//  // print("hello")
-//  public void printHello() {
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  		CONST, encodeDictObject("hello", dict),
-//  		PRINT,
-//  		RET
-//  	};
-//    assertEquals("hello\n", execute(new Code(instrs, 1, 1), dict));
-//  }
-//
-//  @Tag("Q5") @Test
-//  public void nativePrintHello() {
-//  	// print("hello")
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  		LOOKUP, encodeDictObject("print", dict),
-//  		CONST, encodeDictObject(UNDEFINED, dict),
-//  		CONST, encodeDictObject("hello", dict),
-//  		FUNCALL, 1,
-//  		RET
-//  	};
-//    assertEquals("hello\n", execute(new Code(instrs, 1, 1), dict));
-//  }
+  @Tag("Q3") @Test
+  public void integer3() {
+  	// 3
+  	var dict = new Dictionary();
+  	int[] instrs = {
+  		CONST, encodeSmallInt(3),
+  		RET
+  	};
+    assertEquals("", execute(new Code(instrs, 1, 1), dict));
+  }
+
+  @Tag("Q4") @Test
+  public void print3() {
+    // print(3)
+  	var dict = new Dictionary();
+  	int[] instrs = {
+  		CONST, encodeSmallInt(3),
+  		PRINT,
+  		RET
+  	};
+    assertEquals("3\n", execute(new Code(instrs, 1, 1), dict));
+  }
+  @Tag("Q4") @Test
+  // print("hello")
+  public void printHello() {
+  	var dict = new Dictionary();
+  	int[] instrs = {
+  		CONST, encodeDictObject("hello", dict),
+  		PRINT,
+  		RET
+  	};
+    assertEquals("hello\n", execute(new Code(instrs, 1, 1), dict));
+  }
+
+  @Tag("Q5") @Test
+  public void nativePrintHello() {
+  	// print("hello")
+  	var dict = new Dictionary();
+  	int[] instrs = {
+  		LOOKUP, encodeDictObject("print", dict),
+  		CONST, encodeDictObject(UNDEFINED, dict),
+  		CONST, encodeDictObject("hello", dict),
+  		FUNCALL, 1,
+  		RET
+  	};
+    assertEquals("hello\n", execute(new Code(instrs, 1, 1), dict));
+  }
 //  @Tag("Q5") @Test
 //  public void nativePrint3() {
 //    // print(3)
