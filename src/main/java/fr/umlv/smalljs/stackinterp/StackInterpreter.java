@@ -99,6 +99,7 @@ public final class StackInterpreter {
 					throw new UnsupportedOperationException("TODO CONST");
 					// get the constant from the instruction to the stack
 					// push(...)
+
 				}
 				case Instructions.LOOKUP -> {
 					throw new UnsupportedOperationException("TODO LOOKUP");
