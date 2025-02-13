@@ -24,7 +24,7 @@ public class StackInterpreterTests {
     return outStream.toString(UTF_8).replace("\r\n", "\n");
   }
 
-  /*
+
   @Tag("Q2") @Test
   public void helloString() {
     assertEquals("", execute("\"hello\"\n"));
@@ -67,6 +67,7 @@ public class StackInterpreterTests {
             print(a);
             """));
   }
+
   @Tag("Q8") @Test
   public void printSeveralVariables() {
     assertEquals("7\n", execute("""
@@ -106,6 +107,7 @@ public class StackInterpreterTests {
             print(foo(2));
             """));
   }
+
   @Tag("Q10") @Test
   public void callAUserDefinedFunctionWithTheWrongNumberOfArguments() {
   	assertThrows(Failure.class, () -> execute("""
@@ -114,6 +116,7 @@ public class StackInterpreterTests {
             print(foo(2));
             """));
   }
+
   @Tag("Q10") @Test
   public void callSeveralFunctions() {
     assertEquals("foo\nbar\n", execute("""
@@ -127,6 +130,7 @@ public class StackInterpreterTests {
             foo();
             """));
   }
+
   @Tag("Q10") @Test
   public void callVariableFunction() {
     assertEquals("6\n6\n", execute("""
@@ -136,6 +140,7 @@ public class StackInterpreterTests {
             print(bar(3));
             """));
   }
+
   @Tag("Q10") @Test
   public void callVariableFunction2() {
     assertEquals("6\n", execute("""
@@ -144,6 +149,7 @@ public class StackInterpreterTests {
             print(foo(3));
             """));
   }
+
   @Tag("Q10") @Test
   public void callFunctionWithNoReturn() {
     assertEquals("undefined\n", execute("""
@@ -163,6 +169,7 @@ public class StackInterpreterTests {
             }
             """));
   }
+
   @Tag("Q11") @Test
   public void printWithAnIf2() {
     assertEquals("true\n", execute("""
@@ -187,6 +194,7 @@ public class StackInterpreterTests {
             print(foo(2));
             """));
   }
+
   @Tag("Q11") @Test
   public void printVariableWeirdScope() {
     assertEquals("false\nundefined\n", execute("""
@@ -199,6 +207,7 @@ public class StackInterpreterTests {
             }
             print(b);"""));
   }
+
   @Tag("Q11") @Test
   public void printVariableWeirdScope2() {
     assertEquals("true\nhello\n", execute("""
@@ -211,6 +220,7 @@ public class StackInterpreterTests {
             }
             print(b);"""));
   }
+
   @Tag("Q11") @Test
   public void callAUserDefinedFunctionWithAnIf() {
     assertEquals("0\n7\n", execute("""
@@ -225,6 +235,7 @@ public class StackInterpreterTests {
             print(f(7));
             """));
   }
+
   @Tag("Q11") @Test
   public void callAUserDefinedFunctionWithAnIfAndAVariabe() {
     assertEquals("0\n7\n", execute("""
@@ -255,6 +266,7 @@ public class StackInterpreterTests {
             print(fibo(7))
             """));
   }
+
   @Tag("Q12") @Test
   public void callRecursiveFunction() {
     assertEquals("24\n", execute("""
@@ -347,7 +359,7 @@ public class StackInterpreterTests {
                 var john = { name: "John" };
                 print(john.name);
                 """));
-  }
+  }/*
   @Tag("Q15") @Test
   public void objectGetAFieldNoValue() {
     assertEquals(
