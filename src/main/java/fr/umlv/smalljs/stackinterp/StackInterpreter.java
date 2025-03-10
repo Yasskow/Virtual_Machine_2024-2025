@@ -359,11 +359,11 @@ public final class StackInterpreter {
 					}
 
 					// get the field index
-					int fieldIndex = ;
+//					int fieldIndex = ;
 					// get field value
-					int fieldValue = ;
+//					int fieldValue = ;
 					// push field value on top of the stack
-					push();
+//					push();
 				}
 				case Instructions.PUT -> {
 					throw new UnsupportedOperationException("TODO PUT");

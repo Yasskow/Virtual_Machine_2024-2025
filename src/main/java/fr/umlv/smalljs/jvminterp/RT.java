@@ -48,36 +48,41 @@ public final class RT {
   }
 
   public static CallSite bsm_lookup(Lookup lookup, String name, MethodType type, String functionName) {
-    throw new UnsupportedOperationException("TODO bsm_lookup");
-    //var classLoader = (FunClassLoader) lookup.lookupClass().getClassLoader();
-    //var globalEnv = classLoader.getGlobal();
+    var classLoader = (FunClassLoader) lookup.lookupClass().getClassLoader();
+    var globalEnv = classLoader.getGlobal();
     // get the LOOKUP method handle
+    var mh = LOOKUP;
     // use the global environment as first argument and the functionName as second argument
+    mh = MethodHandles.insertArguments(mh, 0, globalEnv, functionName);
     // create a constant callsite
+    return new ConstantCallSite(mh);
   }
 
-  public static CallSite bsm_funcall(Lookup lookup, String name, MethodType type) {
-    throw new UnsupportedOperationException("TODO bsm_funcall");
-    // get INVOKE method handle
-    // make it accept an Object (not a JSObject) and objects as other parameters
-    // create a constant callsite
-  }
+//  public static CallSite bsm_funcall(Lookup lookup, String name, MethodType type) {
+//    // get INVOKE method handle
+//    var mh = INVOKE;
+//    // make it accept an Object (not a JSObject) and objects as other parameters
+//    mh = mh.asType(type);
+//    // create a constant callsite
+//    return new ConstantCallSite(mh);
+//  }
 
   public static Object bsm_fun(Lookup lookup, String name, Class<?> type, int funId) {
-    throw new UnsupportedOperationException("TODO bsm_fun");
-    //var classLoader = (FunClassLoader) lookup.lookupClass().getClassLoader();
-    //var globalEnv = classLoader.getGlobal();
-    //var fun = classLoader.getDictionary().lookupAndClear(funId);
-    //return ByteCodeRewriter.createFunction(fun.optName().orElse("lambda"), fun.parameters(), fun.body(), globalEnv);
+    var classLoader = (FunClassLoader) lookup.lookupClass().getClassLoader();
+    var globalEnv = classLoader.getGlobal();
+    var fun = classLoader.getDictionary().lookupAndClear(funId);
+    return ByteCodeRewriter.createFunction(fun.optName().orElse("lambda"), fun.parameters(), fun.body(), globalEnv);
   }
 
   public static CallSite bsm_register(Lookup lookup, String name, MethodType type, String functionName) {
-    throw new UnsupportedOperationException("TODO bsm_register");
-    //var classLoader = (FunClassLoader) lookup.lookupClass().getClassLoader();
-    //var globalEnv = classLoader.getGlobal();
+    var classLoader = (FunClassLoader) lookup.lookupClass().getClassLoader();
+    var globalEnv = classLoader.getGlobal();
     //get the REGISTER method handle
+    var mh = REGISTER;
     // use the global environment as first argument and the functionName as second argument
+    mh = MethodHandles.insertArguments(mh, 0, globalEnv, functionName);
     // create a constant callsite
+    return new ConstantCallSite(mh);
   }
 
   @SuppressWarnings("unused")  // used by a method handle
@@ -85,9 +90,67 @@ public final class RT {
     return o != null && o != UNDEFINED && o != Boolean.FALSE;
   }
   public static CallSite bsm_truth(Lookup lookup, String name, MethodType type) {
-    throw new UnsupportedOperationException("TODO bsm_truth");
     // get the TRUTH method handle
+    var mh = TRUTH;
     // create a constant callsite
+    return new ConstantCallSite(mh);
+  }
+
+  public static CallSite bsm_funcall(Lookup lookup, String name, MethodType type) {
+    return new InliningCache(type);
+  }
+
+  private final static class InliningCache extends MutableCallSite {
+    private static final MethodHandle SLOW_PATH, TEST;
+
+    static {
+      var lookup = MethodHandles.lookup();
+      try {
+        SLOW_PATH = lookup.findVirtual(InliningCache.class, "slowPath", methodType(MethodHandle.class, Object.class, Object.class));
+        TEST = lookup.findStatic(InliningCache.class, "test", methodType(boolean.class, Object.class, Object.class));
+      } catch (NoSuchMethodException | IllegalAccessException e) {
+        throw new AssertionError(e);
+      }
+    }
+
+    private static final int MAX_DEPTH = 3;
+    private int depth;
+
+    public InliningCache(MethodType type) {
+      super(type);
+      setTarget(MethodHandles.foldArguments(MethodHandles.exactInvoker(type), SLOW_PATH.bindTo(this)));
+    }
+
+    private static boolean test(Object qualifier, Object previousQualifier){
+      return qualifier == previousQualifier;
+    }
+
+    private MethodHandle slowPath(Object qualifier, Object receiver) {
+//      var jsObject = (JSObject)qualifier;
+//      return jsObject.invoke(receiver, args);
+
+       var jsObject = (JSObject)qualifier;
+       var mh = jsObject.getMethodHandle();
+       var varargs = mh.isVarargsCollector();
+      if(!varargs && type().parameterCount() - 2 != mh.type().parameterCount() - 1){
+        throw new Failure("Number of arguments is wrong ! " + (type().parameterCount() - 2) + "when calling " + jsObject.getName());
+      }
+       mh = MethodHandles.dropArguments(mh, 0, Object.class);
+       mh = mh.withVarargs(varargs);
+       mh = mh.asType(type());
+
+       if(depth == MAX_DEPTH){
+         return mh;
+       }
+
+       depth++;
+
+       var test = MethodHandles.insertArguments(TEST, 1, qualifier);
+       var guard = guardWithTest(test, mh, getTarget());
+       setTarget(guard);
+
+       return mh;
+    }
   }
 
   public static CallSite bsm_get(Lookup lookup, String name, MethodType type, String fieldName) {

@@ -24,7 +24,7 @@ public class JVMInterpreterTests {
     return outStream.toString(StandardCharsets.UTF_8).replace("\r\n", "\n");
   }
 
-  /*
+
   @Tag("Q2") @Test
   public void helloString() {
     assertEquals("", execute("\"hello\"\n"));
@@ -54,12 +54,12 @@ public class JVMInterpreterTests {
     assertEquals("6\n", execute("print(3 * 2)\n"));
     assertEquals("1\n", execute("print(3 / 2)\n"));
   }
-  
+
   @Tag("Q7") @Test
   public void printPrint3() {
     assertEquals("3\nundefined\n", execute("print(print(3))\n"));
   }
-  
+
   @Tag("Q8") @Test
   public void printAVariable() {
     assertEquals("3\n", execute("""
@@ -76,6 +76,7 @@ public class JVMInterpreterTests {
             print(a + b);
             """));
   }
+
   @Tag("Q8") @Test
   public void printSeveralAssignments() {
     assertEquals("42\n42\n", execute("""
@@ -85,6 +86,7 @@ public class JVMInterpreterTests {
             print(b);
             """));
   }
+
   @Tag("Q8") @Test
   public void printSeveralArguments() {
     assertEquals("hello Bob\n", execute("""
@@ -92,12 +94,12 @@ public class JVMInterpreterTests {
             print('hello', me);
             """));
   }
-  
+
   @Tag("Q9") @Test
   public void printAVariableDefinedAfter() {
     assertEquals("undefined\n", execute("print(a);\nvar a = 2;\n"));
   }
-  
+
   @Tag("Q10") @Test
   public void callAUserDefinedFunctionAndPrint() {
     assertEquals("3\n", execute("""
@@ -107,6 +109,7 @@ public class JVMInterpreterTests {
             print(foo(2));
             """));
   }
+
   @Tag("Q10") @Test
   public void callAUserDefinedFunctionWithTheWrongNumberOfArguments() {
     assertThrows(Failure.class, () -> execute("""
@@ -115,6 +118,7 @@ public class JVMInterpreterTests {
             print(foo(2));
             """));
   }
+
   @Tag("Q10") @Test
   public void callSeveralFunctions() {
     assertEquals("foo\nbar\n", execute("""
@@ -128,6 +132,7 @@ public class JVMInterpreterTests {
             foo();
             """));
   }
+
   @Tag("Q10") @Test
   public void callVariableFunction() {
     assertEquals("6\n6\n", execute("""
@@ -137,6 +142,7 @@ public class JVMInterpreterTests {
             print(bar(3));
             """));
   }
+
   @Tag("Q10") @Test
   public void callVariableFunction2() {
     assertEquals("6\n", execute("""
@@ -145,6 +151,7 @@ public class JVMInterpreterTests {
             print(foo(3));
             """));
   }
+
   @Tag("Q10") @Test
   public void callFunctionWithNoReturn() {
     assertEquals("undefined\n", execute("""
@@ -164,6 +171,7 @@ public class JVMInterpreterTests {
             }
             """));
   }
+
   @Tag("Q11") @Test
   public void printWithAnIf2() {
     assertEquals("true\n", execute("""
@@ -175,6 +183,7 @@ public class JVMInterpreterTests {
             }
             """));
   }
+
   @Tag("Q11") @Test
   public void printVariableWeirdScope() {
     assertEquals("false\nundefined\n", execute("""
@@ -187,6 +196,7 @@ public class JVMInterpreterTests {
             }
             print(b);"""));
   }
+
   @Tag("Q11") @Test
   public void printVariableWeirdScope2() {
     assertEquals("true\nhello\n", execute("""
@@ -199,6 +209,7 @@ public class JVMInterpreterTests {
             }
             print(b);"""));
   }
+
   @Tag("Q11") @Test
   public void callAUserDefinedFunctionWithAnIf() {
     assertEquals("0\n7\n", execute("""
@@ -243,6 +254,7 @@ public class JVMInterpreterTests {
             print(fibo(7))
             """));
   }
+
   @Tag("Q12") @Test
   public void callRecursiveFunction() {
     assertEquals("24\n", execute("""
@@ -256,6 +268,7 @@ public class JVMInterpreterTests {
             print(fact(4));
             """));
   }
+
   @Tag("Q12") @Test
   public void callSeveralOperations() {
     assertEquals("5\n-1\n6\n0\n", execute("""
@@ -268,6 +281,7 @@ public class JVMInterpreterTests {
             print(calc(/, 2, 3));
             """));
   }
+
   @Tag("Q12") @Test
   public void callAndRewrite() {
     assertEquals("2\n9\n", execute("""
@@ -296,7 +310,7 @@ public class JVMInterpreterTests {
                 print(o);
                 """));
   }
-
+/*
   @Tag("Q14") @Test
   public void createAnObjectFromAVariableValue() {
     assertEquals("""
